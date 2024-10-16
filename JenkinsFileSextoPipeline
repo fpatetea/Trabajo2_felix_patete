@@ -1,0 +1,63 @@
+pipeline {
+    agent any
+    parameters{
+        string(name:'APELLIDO', description:'Ingrese su apellido')
+        text(name:'biografia',description: 'ingrese bio')
+        booleanParam(name:'booleano', description:'Param Booleano')
+        choice(name:'ciudades', choices:['cali','santiago','pzo'], description:'Seleccione una ciudad')
+        password(name:'contrasenia', description:'ingrese contraseña')
+    }
+    environment {
+        INSTAGRAM_OTRO ="@felix_potato"
+    }
+    stages {
+        stage("saludo 1"){
+            steps {
+                echo "hola desde saludo 1"
+            }
+        }
+        stage("saludo 2"){
+            steps {
+                echo "saludo 2 paso 1"
+                echo "hola saludo 2 paso 2"
+            }
+        }
+        stage("saludo 3"){
+            steps{
+                echo "${env.INSTAGRAM}"
+                echo "${INSTAGRAM_OTRO}"
+                echo "$INSTAGRAM"
+                
+                sh "echo 'hola waton'"
+            }   
+        }
+        stage("Variable random de entorno"){
+            steps{
+                echo "${env.JOB_BASE_NAME}"
+                echo "${JOB_BASE_NAME}"
+                echo "$JOB_BASE_NAME"
+                echo "_______________________________"
+                sh "echo ${env.JOB_BASE_NAME}"
+                sh """echo ${JOB_BASE_NAME}"""
+                sh "echo $JOB_BASE_NAME"
+            }
+        }
+        stage("cambio de valor"){
+            steps{
+                script{
+                    INSTAGRAM_OTRO ="@soportebandofic"
+                    echo "$INSTAGRAM_OTRO"
+                    INSTAGRAM_OTRO ="otra weaaa"
+                }
+                echo "$INSTAGRAM"
+            }
+        }
+        stage("imprimir valor"){
+            steps{
+                echo "${params.contrasenia}"
+                echo "${biografia}"
+                sh """echo ${ciudades} """
+            }    
+        }
+    }
+}
